@@ -1,5 +1,5 @@
 import { Article } from "@mui/icons-material"
-import { instance } from "../../common/configs/axios-config"
+import  instance from "../../common/configs/axios-config"
 import { IArticle } from "../model/article.model"
 
 

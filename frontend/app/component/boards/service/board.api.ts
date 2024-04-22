@@ -1,4 +1,4 @@
-import { instance } from "../../common/configs/axios-config"
+import  instance  from "../../common/configs/axios-config"
 
 
 export const findAllBoardsAPI = async (page:number) =>{

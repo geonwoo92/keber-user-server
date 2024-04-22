@@ -5,7 +5,7 @@ package com.example.demo.article;
 import com.example.demo.article.model.ArticleDto;
 import com.example.demo.article.service.ArticleServiceImpl;
 import com.example.demo.common.component.MessengerVo;
-import com.example.demo.common.component.PageRequestVo;
+import com.example.demo.common.component.pagination.PageRequestVo;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;

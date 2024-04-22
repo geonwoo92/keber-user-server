@@ -2,12 +2,12 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import dynamic from "next/dynamic";
-import Header from "./component/common/module/header";
-import { getAuth } from "./component/users/service/user.slice"
+
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { parseCookies } from "nookies";
+import Header from "./component/common/module/header";
 
 
 
@@ -32,9 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {parseCookies().message === 'SUCCESS' && <Header />}
+       
         <div className="mt-100">
-          <ReduxProvider > {children}</ReduxProvider>
+          <ReduxProvider >  {parseCookies().message === 'SUCCESS' && <Header />}
+          {children}</ReduxProvider>
         </div>
       </body>
     </html>

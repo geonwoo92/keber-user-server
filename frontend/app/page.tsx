@@ -1,57 +1,52 @@
 'use client'
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { IUser } from "./component/users/model/user.model"
 import { useDispatch, useSelector } from "react-redux"
 import { existsUsername, findlogin } from "./component/users/service/user.service"
 import { useRouter } from "next/navigation"
 import { parseCookies, destroyCookie, setCookie } from "nookies"
-import { getAuth } from "./component/users/service/user.slice"
+import { getAuth, getExistsUsername } from "./component/users/service/user.slice"
 import { jwtDecode } from "jwt-decode"
+import { Password } from "@mui/icons-material"
 
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const auth = useSelector(getAuth)
-
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const [user, setUser] = useState({} as IUser)
   const [isWrongId, setisWrongId] = useState(false)
   const [isTrueId, setisTrueId] = useState(false)
-  const[len, setLen] = useState('')
+  const [beforeSubmit, setBeforeSubmit] = useState(true)
+  const [len, setLen] = useState('')
 
   const [isWrongPw, setisWrongPw] = useState(false)
-
-
-
+  const existsUsernameSelector = useSelector(getExistsUsername)
 
   const handelIdChange = (e: any) => {
-    const ID_CHECK = /^[a-zA-z][a-zA-z0-9]{5,15}$/g;
+    const ID_CHECK = /^[a-zA-z][a-zA-z0-9]{6,19}$/g;
     // 영어 대소문자로 시작, 6~20자의 영어소문자 숫자
-   
-      setLen(e.target.value)
-    {
+    setLen(e.target.value)
+    setBeforeSubmit(true)
 
-      if (ID_CHECK.test(len)) {
+    if (ID_CHECK.test(len)) {
+      setisWrongId(false)
+      setisTrueId(true)
+      console.log('정확하게 입력했습니다.')
 
-        setisWrongId(false)
-        setisTrueId(true)
-        console.log('정확하게 입력했습니다.')
+      setUser({
+        ...user,
+        username: len
+      })
 
-        setUser({
-          ...user,
-          username: len
-        })
-
-      } else {
-        setisWrongId(true)
-        setisTrueId(false)
-        console.log('잘못된 형식의 아이디 입니다.')
-      }
+    } else {
+      setisWrongId(true)
+      setisTrueId(false)
+      console.log('잘못된 형식의 아이디 입니다.')
     }
-
-
   }
 
   const handelPwChange = (e: any) => {
@@ -71,7 +66,7 @@ export default function Home() {
 
       console.log('잘못된 형식의 비밀번호 입니다.')
     }
-   
+
   }
 
   const handleSubmit = () => {
@@ -79,24 +74,67 @@ export default function Home() {
     console.log('user ...' + JSON.stringify(user))
     dispatch(existsUsername(user.username))
 
-    dispatch(findlogin(user))
+      .then((res: any) => {
+        if (res.payload == true) {
+
+          dispatch(findlogin(user))
+            .then((resp: any) => {
+              console.log('서버에서 넘어온 RES ' + JSON.stringify(resp))
+              console.log('서버에서 넘어온 메시지 1 ' + resp.payload.message)
+              console.log('서버에서 넘어온 토큰 1 ' + resp.payload.accessToken)
+              console.log('로그인성공')
+              setCookie({}, 'message', resp.payload.message, { httpOnly: false, path: '/' })
+              setCookie({}, 'accessToken', resp.payload.accessToken, { httpOnly: false, path: '/' })
+              console.log('서버에서 넘어온 메시지 ' + parseCookies().message)
+              console.log('서버에서 넘어온 토큰 ' + parseCookies().accessToken)
+              console.log('토큰을 decode한 내용:')
+              console.log(jwtDecode<any>(parseCookies().accessToken))
+              router.push('/pages/boards/list')
+
+            })
+            .catch((err: any) => {
+              console.log('LOGIN FAIL : '+err)
+            })
+
+        } else {
+          console.log('아이디가 존재하지 않습니다')
+          setBeforeSubmit(false)
+          setisWrongId(false)
+          setisTrueId(false)
+        }
+      })
+      .catch((res: any) => {
+
+      })
+
+      .finally(() => {
+        console.log('최종적으로 반드시 이뤄져야 할 로직')
+      })
+    setBeforeSubmit(false)
+    setisWrongId(false)
+    setisTrueId(false)
+    if (passwordRef.current) {
+      passwordRef.current.value = "";
+    }
+
+    // dispatch(findlogin(user))
   }
 
 
-  useEffect(() => {
-    if (auth.message === 'SUCCESS') {
-      console.log('로그인성공')
-      setCookie({}, 'message', auth.message, { httpOnly: false, path: '/' })
-      setCookie({}, 'token', auth.token, { httpOnly: false, path: '/' })
-      console.log('서버에서 넘어온 메시지 ' + parseCookies().message)
-      console.log('서버에서 넘어온 토큰 ' + parseCookies().token)
-      console.log('토큰을 decode한 내용:')
-      console.log(jwtDecode<any>(parseCookies().token))
-      router.push('/pages/boards/list')
-    } else {
-      console.log('LOGIN FAIL')
-    }
-  }, [auth])
+  // useEffect(() => {
+  //   if (auth.message === 'SUCCESS') {
+  //     console.log('로그인성공')
+  //     setCookie({}, 'message', auth.message, { httpOnly: false, path: '/' })
+  //     setCookie({}, 'token', auth.token, { httpOnly: false, path: '/' })
+  //     console.log('서버에서 넘어온 메시지 ' + parseCookies().message)
+  //     console.log('서버에서 넘어온 토큰 ' + parseCookies().token)
+  //     console.log('토큰을 decode한 내용:')
+  //     console.log(jwtDecode<any>(parseCookies().token))
+  //     router.push('/pages/boards/list')
+  //   } else {
+  //     console.log('LOGIN FAIL')
+  //   }
+  // }, [auth])
 
 
 
@@ -126,22 +164,28 @@ export default function Home() {
                 required
               />
             </div>
-            {isWrongId && (<pre>
+            {isWrongId && len?.length> 1 &&(<pre>
               <h6 className="text-red-500">
                 잘못된 아이디 입니다.
               </h6>
             </pre>
             )
             }
-            {isTrueId && (<pre>
+            {isTrueId && len?.length> 1 && (<pre>
               <h6 className="text-yellow-500">
                 정상적인 아이디 입니다.
               </h6>
             </pre>
-            
+
             )
-          }
-            
+            }
+            {!beforeSubmit && !existsUsernameSelector && (<pre>
+              <h6 className='text-red-500' >
+                존재하지 않는 아이디 입니다.
+              </h6>
+            </pre>)}
+
+
             <div className="mt-4 flex flex-col justify-between">
               <div className="flex justify-between">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -154,6 +198,7 @@ export default function Home() {
                 </h6>
               </pre>)}
               <input
+                ref={passwordRef}
                 onChange={handelPwChange}
                 className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
                 type="password"
@@ -218,6 +263,7 @@ export default function Home() {
       </div>
 
     </div>
-  );
+  )
+
 }
 

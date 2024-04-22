@@ -4,7 +4,7 @@ package com.example.demo.board;
 import com.example.demo.board.model.BoardDto;
 import com.example.demo.board.service.BoardServiceImpl;
 import com.example.demo.common.component.MessengerVo;
-import com.example.demo.common.component.PageRequestVo;
+import com.example.demo.common.component.pagination.PageRequestVo;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;

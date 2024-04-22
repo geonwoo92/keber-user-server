@@ -25,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
 
         return MessengerVo.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? createToken(param) : "none")
+                .accessToken(flag ? createToken(param) : "none")
                 .build();
 
 

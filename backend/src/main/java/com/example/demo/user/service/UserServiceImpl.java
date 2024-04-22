@@ -1,7 +1,7 @@
 package com.example.demo.user.service;
 
 
-import com.example.demo.common.component.JwtProvider;
+import com.example.demo.common.component.security.JwtProvider;
 import com.example.demo.common.component.MessengerVo;
 import com.example.demo.user.model.User;
 import com.example.demo.user.model.UserDto;
@@ -29,8 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MessengerVo save(UserDto userDto) {
-        entityToDto((repository.save(dtoToEntity(userDto))));
-        return new MessengerVo();
+        User ent = repository.save(dtoToEntity(userDto));
+        System.out.println(" ============ UserServiceImpl save instanceof =========== ");
+        System.out.println((ent instanceof User) ? "SUCCESS" : "FAILURE");
+        return MessengerVo.builder()
+                .message((ent instanceof User) ? "SUCCESS" : "FAILURE")
+                .build();
     }
 
     @Override
@@ -97,41 +101,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MessengerVo existsByUsername(String username) {
-        boolean flag = repository.existsByUsername(username);
-        return MessengerVo.builder()
-                .message(flag ? "SUCCESS" : "FAILURE")
-                .build();
-
+    public Boolean existsByUsername(String username) {
+        Integer count =repository.existsByUsername(username);
+        return count  == 1;
     }
 
     @Transactional
     @Override
-    public MessengerVo login(UserDto param) {
+    public MessengerVo login(UserDto dto) {
+        log.info("로그인 서비스로 들어온 파라미터 : "+dto);
+        User user = repository.findByUsername(dto.getUsername()).get();
+        String accessToken = jwtProvider.createToken(entityToDto(user));
+        boolean flag = user.getPassword().equals(dto.getPassword());
+        // passwordEncoder.matches
 
-        User user = repository.findByUsername(param.getUsername()).get();
-        Long userId = user.getId();
-        boolean flag = user.getPassword().equals(param.getPassword());
-        String token = jwtProvider.createToken(entityToDto(user));
-
-//     boolean flag = repository.findByUsername(param.getUsername()).get().getPassword().equals(param.getPassword());
-//       토큰을 각 세션(Header, Payload)으로 분할
-        String[] chunks = token.split("\\.");
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-
-        String header = new String(decoder.decode(chunks[0]));
-        String payload = new String(decoder.decode(chunks[1]));
-
-        log.info("Token header :" + header);
-        log.info("Token payload :" + payload);
+        // 토큰을 각 섹션(Header, Payload, Signature)으로 분할
+        jwtProvider.getPayload(accessToken);
 
         return MessengerVo.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? token : "none")
-
+                .accessToken(flag ? accessToken : "None")
                 .build();
-
     }
+
+
+
 
 }
 
