@@ -9,19 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        @ApiResponse(responseCode = "404", description = "Customer not found")})
-@RequiredArgsConstructor
-@RequestMapping(path = "/api/auth")
-
-public class AuthController {
-    private final AuthService service;
-
-    @PostMapping(path = "/login")
-    public ResponseEntity<MessengerVo> login(@RequestBody UserDto param) {
-        return ResponseEntity.ok(service.login(param));
-    }
-}
+//@RestController
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@ApiResponses(value = {
+//        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+//        @ApiResponse(responseCode = "404", description = "Customer not found")})
+//@RequiredArgsConstructor
+//@RequestMapping(path = "/api/auth")
+//
+//public class AuthController {
+//    private final AuthService service;
+//
+//    @PostMapping(path = "/login")
+//    public ResponseEntity<MessengerVo> login(@RequestBody UserDto param) {
+//        return ResponseEntity.ok(service.login(param));
+//    }
+//}

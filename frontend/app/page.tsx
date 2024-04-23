@@ -39,7 +39,7 @@ export default function Home() {
 
       setUser({
         ...user,
-        username: len
+        username: e.target.value
       })
 
     } else {
@@ -90,7 +90,7 @@ export default function Home() {
               console.log('토큰을 decode한 내용:')
               console.log(jwtDecode<any>(parseCookies().accessToken))
               router.push('/pages/boards/list')
-
+              router.refresh()
             })
             .catch((err: any) => {
               console.log('LOGIN FAIL : '+err)

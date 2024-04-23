@@ -15,11 +15,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(@SuppressWarnings("null") InterceptorRegistry registry) {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("locale");
-        registry.addInterceptor(localeChangeInterceptor)
-                .excludePathPatterns("/favicon.ico")
+
+        registry.addInterceptor(authInterceptor)
+                .excludePathPatterns("/api/auth/**")
                 .addPathPatterns("/api/**");
+
 
     }
 

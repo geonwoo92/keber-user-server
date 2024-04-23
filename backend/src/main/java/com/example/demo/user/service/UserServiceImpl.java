@@ -102,29 +102,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean existsByUsername(String username) {
-        Integer count =repository.existsByUsername(username);
-        return count  == 1;
+        Integer count = repository.existsByUsername(username);
+        return count == 1;
     }
 
     @Transactional
     @Override
     public MessengerVo login(UserDto dto) {
-        log.info("로그인 서비스로 들어온 파라미터 : "+dto);
+        log.info("로그인 서비스로 들어온 파라미터 : " + dto);
         User user = repository.findByUsername(dto.getUsername()).get();
         String accessToken = jwtProvider.createToken(entityToDto(user));
         boolean flag = user.getPassword().equals(dto.getPassword());
         // passwordEncoder.matches
 
         // 토큰을 각 섹션(Header, Payload, Signature)으로 분할
-        jwtProvider.getPayload(accessToken);
+        jwtProvider.printPayload(accessToken);
 
         return MessengerVo.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
                 .accessToken(flag ? accessToken : "None")
                 .build();
     }
-
-
 
 
 }

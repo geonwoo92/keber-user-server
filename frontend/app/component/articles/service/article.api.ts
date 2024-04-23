@@ -6,7 +6,7 @@ import { IArticle } from "../model/article.model"
 export const findAllArticlesAPI = async (page:number) =>{
     try {
 
-        const response = await instance.get('/articles/list',{
+        const response = await instance().get('/articles/list',{
             params: {page,limit: 10}
         })
         return response.data
@@ -19,7 +19,7 @@ export const findAllArticlesAPI = async (page:number) =>{
 
 export const findArticleByIdAPI = async (id:number) =>{
     try {
-        const response = await instance.get('/articles/detail',{
+        const response = await instance().get('/articles/detail',{
             params: {id}
         })
         return response.data
@@ -33,7 +33,7 @@ export const findArticleByIdAPI = async (id:number) =>{
 export const findArticlesByBoardIdAPI = async (id:number) =>{
     try {
 
-        const response = await instance.get('/articles/boardlist',{
+        const response = await instance().get('/articles/boardlist',{
             params: {id}
         })
         return response.data
@@ -48,7 +48,7 @@ export const findArticlesByBoardIdAPI = async (id:number) =>{
 export const saveArticleAPI = async (article:IArticle) =>{
     try {
 
-        const response = await instance.post('/articles/save',article)
+        const response = await instance().post('/articles/save',article)
         return response.data
         
     } catch (error) {
@@ -61,7 +61,7 @@ export const saveArticleAPI = async (article:IArticle) =>{
 export const DeleteArticleByIdAPI = async (id:number) =>{
     try {
 
-        const response = await instance.delete('/articles/delete',{
+        const response = await instance().delete('/articles/delete',{
             params: {id,limit: 10}
         })
         return response.data
@@ -75,7 +75,7 @@ export const DeleteArticleByIdAPI = async (id:number) =>{
 export const UpdateArticleByIdAPI = async (id:number) =>{
     try {
 
-        const response = await instance.get('/articles/modifiy',{
+        const response = await instance().get('/articles/modifiy',{
             params: {id,limit: 10}
         })
         return response.data
