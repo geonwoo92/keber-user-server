@@ -31,10 +31,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 //            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 //            return false;
 //        }
-//
 //        Long id = jwtProvider.getPayload(token).get("id", Long.class); //디스크 정적 객체\
 //        log.info("2-인터셉터 사용자 id : {}", id);
-//
 //
 //        Optional<User> user = userRepository.findById(id);
 //
@@ -53,11 +51,10 @@ public class AuthInterceptor implements HandlerInterceptor {
                 .peek(token->log.info("1-인터셉터 토큰 로그 Bearer 포함: {} ",token ))
                 .peek(token->jwtProvider.printPayload(token))
                 .map(token -> jwtProvider.getPayload(token).get("userId", Long.class))
-                .peek(i->log.info("2-인터셉터 토큰 로그 Bearer 포함: {} ",i ))
 
                 .map(id -> userRepository.findById(id))
                 .filter(id -> id.isPresent())
-                .peek(id->log.info("3-인터셉터 사용자 id : {}",id))
+                .peek(id->log.info("2-인터셉터 사용자 id : {}",id))
                 .findAny()
                 .isPresent();
 

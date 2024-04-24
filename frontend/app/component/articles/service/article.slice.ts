@@ -2,7 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SaveArticle, findAllArticles,  findArticleById, findArticlesByBoardId } from './article.service';
 import { IArticle } from '../model/article.model';
-import { saveArticleAPI } from './article.api';
 
 
 interface ArticleState{

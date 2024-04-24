@@ -19,7 +19,12 @@ export default function WriterArticlesPage() {
 
   const dispatch = useDispatch()
   const articles = useSelector(getSaveArticle)
+  const [content, setconTent] = useState("")
 
+  const selectHandler = (e: any) => {
+
+    setconTent(e.target.value)
+  }
   const handleonContent = (e: any) => {
     setArticle({
       ...article,
@@ -38,7 +43,6 @@ export default function WriterArticlesPage() {
     router.push('/pages/boards/list')
   }
 
-
   const handleSubmit = () => {
   }
 
@@ -50,6 +54,12 @@ export default function WriterArticlesPage() {
       console.log(articles.message)
     }
   }, [articles])
+  const Options = [
+    { id: 1, title: "review", content: "리뷰게시판" },
+    { id: 2, title: "qna", content: "Q&A" }, 
+    { id: 3, title: "free", content: "자유게시판" }
+
+  ]
 
   const handleInsert = () => { }
 
@@ -58,10 +68,15 @@ export default function WriterArticlesPage() {
 
     <br /><br /> <form className="max-w-sm mx-auto">
       <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select 게시판</label>
-      <select onChange={handleonId} id="BOARDID" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-        <option>Review(1) </option>
-        <option>QnA(2) </option>
+      <select onChange={selectHandler} id="BOARDID" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      {
+      
+      Options.map((item,index)=>(
+      <option key={item.id} title={item.title}> {item.content} </option>))
+    
+      
+    
+      } 
       </select>
     </form><br /><br />
 

@@ -77,9 +77,11 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<MessengerVo> logout(@RequestParam Long id) {
-        service.existsById(0L);
-        return ResponseEntity.ok(new MessengerVo());
+    public ResponseEntity<Boolean> logout(@RequestHeader("Authorization") String accessToken) {
+
+        log.info("logout request : {}", accessToken);
+        var flag = service.logout(accessToken);//토큰이 없으면 true, 있으면 false
+        return ResponseEntity.ok(flag);
     }
 
 }

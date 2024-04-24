@@ -73,7 +73,7 @@ public class JwtProvider {
 
     public Claims getPayload(String token) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseEncryptedClaims(token).getPayload();
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
 
     }
 
