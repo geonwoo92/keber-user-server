@@ -52,15 +52,17 @@ export default function ArticleColumns(): GridColDef[] {
             headerName: '수정일',
             renderCell: ({ row }: CellType) => <Typography textAlign="center" sx={{ fontSize: "1.5rem" }}>  {row.modDate}</Typography>
         },
-        {
-            flex:0.04,
-            field: 'boardType',
-            minWidth: 30,
-            sortable:false,
-            headerName: 'boardType',
-            renderCell:({row}:CellType) => <Typography textAlign="center" sx={{ fontSize: "1.5rem" }}>{row.boardId}</Typography>
-        },
+        
+            {
+                flex: 0.04,
+                minWidth: 30,
+                sortable: false,
+                field: 'delete',
+                headerName: '삭제',
+                renderCell: ({row}:CellType) => <Link href={""}>  {<Typography textAlign="center" sx={{fontSize:"1.5rem"}}> 삭제 </Typography>}</Link>
+                },
+]
 
-    ]
+    
 
 }

@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { SaveArticle, findAllArticles,  findArticleById, findArticlesByBoardId } from './article.service';
+import { saveArticle, findAllArticles,  findArticleById, findArticlesByBoardId } from './article.service';
 import { IArticle } from '../model/article.model';
 
 
@@ -44,7 +44,7 @@ export const articleSlice = createSlice({
         .addCase(findAllArticles.fulfilled, (state: any, {payload}: any) =>{state.array = payload}) 
         .addCase(findArticleById.fulfilled, (state: any, {payload}: any) =>{state.json = payload})
         .addCase(findArticlesByBoardId.fulfilled, (state: any, {payload}: any) =>{state.json = payload}) 
-        .addCase(SaveArticle.fulfilled, (state: any, {payload}: any) =>{state.json = payload}) 
+        .addCase(saveArticle.fulfilled, (state: any, {payload}: any) =>{state.json = payload}) 
     }}) 
         
 

@@ -35,7 +35,7 @@ async(id:number, {rejectWithValue})=> {
 }
 
 )
-export const SaveArticle: any =createAsyncThunk('articles/SaveArticle',
+export const saveArticle: any =createAsyncThunk('articles/saveArticle',
 async(article:IArticle, {rejectWithValue})=> {
 
     const data:any = await saveArticleAPI(article);

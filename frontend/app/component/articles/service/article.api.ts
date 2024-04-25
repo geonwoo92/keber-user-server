@@ -49,6 +49,7 @@ export const saveArticleAPI = async (article:IArticle) =>{
     try {
 
         const response = await instance().post('/articles/save',article)
+        console.log('response data save api : ', response.data)
         return response.data
         
     } catch (error) {

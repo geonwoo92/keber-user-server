@@ -1,6 +1,7 @@
 package com.example.demo.user.service;
 
 
+import com.example.demo.board.model.BoardDto;
 import com.example.demo.common.component.security.JwtProvider;
 import com.example.demo.common.component.MessengerVo;
 import com.example.demo.user.model.User;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserDto userDto;
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
+    private final BoardDto boardDto;
 
 
     @Override
@@ -131,7 +133,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Boolean logout(String accessToken) {
-        Long id = 1L
+        Long id = userDto.getId()
                 ;
         String deletedToken = "";
         repository.modifyTokenById(id,deletedToken);

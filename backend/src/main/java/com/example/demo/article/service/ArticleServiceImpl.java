@@ -1,8 +1,10 @@
 package com.example.demo.article.service;
 
+import com.example.demo.article.model.Article;
 import com.example.demo.article.model.ArticleDto;
 import com.example.demo.article.repository.ArticleRepository;
 import com.example.demo.common.component.MessengerVo;
+import com.example.demo.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,9 +19,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public MessengerVo save(ArticleDto articleDto) {
-        entityToDto((repository.save(dtoToEntity(articleDto))));
-
-        return new MessengerVo();
+        Article ent = repository.save(dtoToEntity(articleDto));
+        System.out.println(" ============ BoardServiceImpl save instanceof =========== ");
+        System.out.println((ent instanceof Article) ? "SUCCESS" : "FAILURE");
+        return MessengerVo.builder()
+                .message((ent instanceof Article) ? "SUCCESS" : "FAILURE")
+                .id(ent.getBoard().getId())
+                .build();
     }
 
     @Override

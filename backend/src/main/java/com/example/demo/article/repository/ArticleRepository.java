@@ -6,10 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-import static org.apache.coyote.http11.Constants.a;
 
 
 @Repository
@@ -24,6 +22,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             "a.id, a.title, a.content, a.writer.id, a.board.id, a.regDate, a.modDate)";
     @Query(" select " + articleDtoMapping +" from articles a where a.board.id = :boardId ")
     List<ArticleDto> getArticleDTOByBoardId(@Param("boardId") Long boardId);
+
+
+    List<Article> findAllByOrderByIdDesc();
 
     //    //Native 방식
 //    @Query(value = " select * from articles a where a.board.id = 1 ",nativeQuery = true)
