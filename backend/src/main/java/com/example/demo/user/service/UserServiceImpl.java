@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserDto userDto;
     private final JwtProvider jwtProvider;
-    private final UserRepository userRepository;
     private final BoardDto boardDto;
 
 
